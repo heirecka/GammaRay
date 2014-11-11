@@ -65,6 +65,8 @@ endif()
 enable_testing()
 
 # Version setup
+set(GAMMARAY_SHORT_NAME "gammaray")
+set(GAMMARAY_LONG_NAME "GammaRay")
 set(GAMMARAY_VERSION_MAJOR "2")
 set(GAMMARAY_VERSION_MINOR "2")
 set(GAMMARAY_VERSION_PATCH "50")
@@ -72,6 +74,7 @@ set(GAMMARAY_VERSION "${GAMMARAY_VERSION_MAJOR}.${GAMMARAY_VERSION_MINOR}.${GAMM
 set(GAMMARAY_VERSION_STRING "${GAMMARAY_VERSION}")
 set(GAMMARAY_SOVERSION "2.3.0")
 set(GAMMARAY_PLUGIN_VERSION "2.3")
+set(GAMMARAY_COPYRIGHT "Copyright © 20XX-2014, KDAB.")
 
 if(EXISTS "${CMAKE_SOURCE_DIR}/.git")
   find_package(Git)
@@ -303,24 +306,42 @@ add_feature_info("Widget .ui file export" HAVE_QT_DESIGNER "Requires QtDesigner 
 #
 # Installation settings
 #
-set(BIN_INSTALL_DIR "bin")
-set(LIB_SUFFIX "" CACHE STRING "Define suffix of directory name (32/64)")
-set(LIB_INSTALL_DIR "lib${LIB_SUFFIX}")
-set(INCLUDE_INSTALL_DIR "include/gammaray")
-set(CMAKECONFIG_INSTALL_DIR ${LIB_INSTALL_DIR}/cmake/GammaRay)
-set(XDG_APPS_INSTALL_DIR share/applications)
-set(APPDATA_INSTALL_DIR share/appdata)
-if(WIN32)
-  set(PLUGIN_INSTALL_DIR "plugins")
+
+if(APPLE)
+  set(BUNDLE_INSTALL_DIR "/Applications/Qt4")
+  set(BIN_INSTALL_DIR "${GAMMARAY_LONG_NAME}.app/Contents/MacOS")
   set(LIBEXEC_INSTALL_DIR "${BIN_INSTALL_DIR}")
+  set(LIB_INSTALL_DIR "${GAMMARAY_LONG_NAME}.app/Contents/Frameworks")
+  set(PLUGIN_INSTALL_DIR "${GAMMARAY_LONG_NAME}.app/Contents/PlugIns")
+  set(RESOURCES_INSTALL_DIR "${GAMMARAY_LONG_NAME}.app/Contents/Resources")
+  set(DOC_INSTALL_DIR "${RESOURCES_INSTALL_DIR}/docs")
+  set(LIB_SUFFIX "" CACHE STRING "Define suffix of directory name (32/64)")
+  set(CMAKECONFIG_INSTALL_DIR "${RESOURCES_INSTALL_DIR}/cmake/GammaRay")
+  set(INCLUDE_INSTALL_DIR "${RESOURCES_INSTALL_DIR}/include/gammaray")
+  set(XDG_APPS_INSTALL_DIR "${RESOURCES_INSTALL_DIR}/share/applications")
+  set(APPDATA_INSTALL_DIR "${RESOURCES_INSTALL_DIR}/share/appdata")
+  set(MAN_INSTALL_DIR "${RESOURCES_INSTALL_DIR}/man/man1")
 else()
-  set(PLUGIN_INSTALL_DIR "${LIB_INSTALL_DIR}/gammaray")
-  set(LIBEXEC_INSTALL_DIR "${LIB_INSTALL_DIR}/gammaray/libexec")
-endif()
-if(UNIX AND NOT APPLE)
-  set(DOC_INSTALL_DIR share/doc/gammaray/)
-else()
-  set(DOC_INSTALL_DIR .)
+  set(BIN_INSTALL_DIR "bin")
+  set(LIB_SUFFIX "" CACHE STRING "Define suffix of directory name (32/64)")
+  set(LIB_INSTALL_DIR "lib${LIB_SUFFIX}")
+  set(INCLUDE_INSTALL_DIR "include/gammaray")
+  set(CMAKECONFIG_INSTALL_DIR ${LIB_INSTALL_DIR}/cmake/GammaRay)
+  set(XDG_APPS_INSTALL_DIR share/applications)
+  set(APPDATA_INSTALL_DIR share/appdata)
+  set(MAN_INSTALL_DIR "share/man/man1")
+  if(WIN32)
+    set(PLUGIN_INSTALL_DIR "plugins")
+    set(LIBEXEC_INSTALL_DIR "${BIN_INSTALL_DIR}")
+  else()
+    set(PLUGIN_INSTALL_DIR "${LIB_INSTALL_DIR}/gammaray")
+    set(LIBEXEC_INSTALL_DIR "${LIB_INSTALL_DIR}/gammaray/libexec")
+  endif()
+  if(UNIX)
+    set(DOC_INSTALL_DIR share/doc/gammaray/)
+  else()
+    set(DOC_INSTALL_DIR .)
+  endif()
 endif()
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/${BIN_INSTALL_DIR})
@@ -339,8 +360,15 @@ set(
   RUNTIME DESTINATION ${BIN_INSTALL_DIR}
   LIBRARY DESTINATION ${LIB_INSTALL_DIR}
   ARCHIVE DESTINATION ${LIB_INSTALL_DIR} COMPONENT Devel
-  BUNDLE DESTINATION "/Applications/Qt4"
 )
+
+if(APPLE)
+set(
+  INSTALL_TARGETS_DEFAULT_ARGS
+  ${INSTALL_TARGETS_DEFAULT_ARGS}
+  BUNDLE DESTINATION ${BUNDLE_INSTALL_DIR}
+)
+endif()
 
 # "inverse" install dirs, to find the base location again
 gammaray_inverse_dir(GAMMARAY_INVERSE_BIN_DIR "${BIN_INSTALL_DIR}")
@@ -449,8 +477,8 @@ endif()
 add_subdirectory(plugins)
 add_subdirectory(resources)
 
-if(NOT APPLE AND NOT GAMMARAY_PROBE_ONLY_BUILD)
-  if(UNIX)
+if(NOT GAMMARAY_PROBE_ONLY_BUILD)
+  if(NOT APPLE AND UNIX)
     install(FILES GammaRay.desktop DESTINATION ${XDG_APPS_INSTALL_DIR})
     install(FILES GammaRay.appdata.xml DESTINATION ${APPDATA_INSTALL_DIR})
   endif()

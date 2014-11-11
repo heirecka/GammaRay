@@ -42,9 +42,9 @@ endmacro()
 
 # embed an Info.plist file into a non-bundled Mac executable
 macro(gammaray_embed_info_plist _target _plist)
-  configure_file(${_plist} ${CMAKE_CURRENT_BINARY_DIR}/${_target}_Info.plist)
+  configure_file(${_plist} ${CMAKE_CURRENT_BINARY_DIR}/Info.plist)
   if(APPLE)
-    set_target_properties(${_target} PROPERTIES LINK_FLAGS "-sectcreate __TEXT __info_plist ${CMAKE_CURRENT_BINARY_DIR}/${_target}_Info.plist")
+    set_target_properties(${_target} PROPERTIES LINK_FLAGS "-sectcreate __TEXT __info_plist ${CMAKE_CURRENT_BINARY_DIR}/Info.plist")
   endif()
 endmacro()
 

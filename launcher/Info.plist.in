@@ -1,16 +1,24 @@
 <plist version="1.0">
 <dict>
+    <key>CFBundlePackageType</key>
+    <string>APPL</string>
     <key>CFBundleIdentifier</key>
-    <string>com.kdab.GammaRay.injector</string>
+    <string>com.kdab.@GAMMARAY_SHORT_NAME@.injector</string>
     <key>CFBundleInfoDictionaryVersion</key>
     <string>6.0</string>
     <key>CFBundleName</key>
-    <string>gammaray</string>
+    <string>@GAMMARAY_SHORT_NAME@</string>
+    <key>CFBundleExecutable</key>
+    <string>@GAMMARAY_SHORT_NAME@</string>
     <key>CFBundleVersion</key>
     <string>@GAMMARAY_VERSION_STRING@</string>
     <key>CFBundleShortVersion</key>
     <string>@GAMMARAY_VERSION@</string>
+    <key>CFBundleGetInfoString</key>
+    <string>@GAMMARAY_COPYRIGHT@</string>
+    <key>CFBundleIconFile</key>
+    <string>@GAMMARAY_LONG_NAME@.icns</string>
     <key>LSUIElement</key>
-    <string>1</string>
+    <string>0</string>
 </dict>
 </plist>
