@@ -311,7 +311,14 @@ add_feature_info("Widget .ui file export" HAVE_QT_DESIGNER "Requires QtDesigner 
 #
 
 if(APPLE)
-  set(BUNDLE_INSTALL_DIR "/Applications/Qt4")
+  # Make sure default prefix on mac is /Applications, dunnow why but it does not default to it
+  # probably because we do not enabled built in bundle support in the main project
+  string(COMPARE EQUAL "${CMAKE_INSTALL_PREFIX}" "/usr/local" CMP_RESULT)
+  if(CMP_RESULT)
+    set(CMAKE_INSTALL_PREFIX "/Applications")
+  endif()
+
+  set(BUNDLE_INSTALL_DIR "${CMAKE_INSTALL_PREFIX}")
   set(BIN_INSTALL_DIR "${GAMMARAY_LONG_NAME}.app/Contents/MacOS")
   set(LIBEXEC_INSTALL_DIR "${BIN_INSTALL_DIR}")
   set(LIB_INSTALL_DIR "${GAMMARAY_LONG_NAME}.app/Contents/Frameworks")
