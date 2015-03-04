@@ -24,6 +24,7 @@
 #ifndef GAMMARAY_REMOTEMODEL_H
 #define GAMMARAY_REMOTEMODEL_H
 
+#include "gammaray_clientlib_export.h"
 #include <common/objectmodel.h>
 #include <common/protocol.h>
 
@@ -35,7 +36,7 @@ namespace GammaRay {
 
 class Message;
 
-class RemoteModel : public QAbstractItemModel
+class GAMMARAY_CLIENTLIB_EXPORT RemoteModel : public QAbstractItemModel
 {
   Q_OBJECT
   public:

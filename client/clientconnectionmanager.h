@@ -24,6 +24,8 @@
 #ifndef GAMMARAY_CLIENTCONNECTIONMANAGER_H
 #define GAMMARAY_CLIENTCONNECTIONMANAGER_H
 
+#include "gammaray_clientlib_export.h"
+
 #include <QObject>
 #include <QTime>
 #include <QUrl>
@@ -36,7 +38,7 @@ class Client;
 class MainWindow;
 
 /** Pre-MainWindow connection setup logic. */
-class ClientConnectionManager : public QObject
+class GAMMARAY_CLIENTLIB_EXPORT ClientConnectionManager : public QObject
 {
   Q_OBJECT
   public:
