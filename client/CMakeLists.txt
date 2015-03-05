@@ -56,3 +56,11 @@ gammaray_install_headers(
   gammaray_clientlib_export.h
   clientconnectionmanager.h
 )
+
+ecm_generate_pri_file(BASE_NAME GammaRayClient
+                      LIB_NAME gammaray_client-${GAMMARAY_PROBE_ABI}
+                      DEPS "core gui network GammaRayCommon"
+                      FILENAME_VAR PRI_FILENAME
+)
+
+install(FILES ${PRI_FILENAME} DESTINATION ${ECM_MKSPECS_INSTALL_DIR})

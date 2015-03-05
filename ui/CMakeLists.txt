@@ -130,3 +130,11 @@ gammaray_install_headers(
   propertywidgettab.h
   tooluifactory.h
 )
+
+ecm_generate_pri_file(BASE_NAME GammaRayUi
+                      LIB_NAME gammaray_ui-${GAMMARAY_PROBE_ABI}
+                      DEPS "core gui GammaRayCommon"
+                      FILENAME_VAR PRI_FILENAME
+)
+
+install(FILES ${PRI_FILENAME} DESTINATION ${ECM_MKSPECS_INSTALL_DIR})

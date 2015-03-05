@@ -92,3 +92,11 @@ gammaray_install_headers(
   propertycontrollerinterface.h
   protocol.h
 )
+
+ecm_generate_pri_file(BASE_NAME GammaRayCommon
+                      LIB_NAME gammaray_common-${GAMMARAY_PROBE_ABI}
+                      DEPS "core network"
+                      FILENAME_VAR PRI_FILENAME
+)
+
+install(FILES ${PRI_FILENAME} DESTINATION ${ECM_MKSPECS_INSTALL_DIR})
